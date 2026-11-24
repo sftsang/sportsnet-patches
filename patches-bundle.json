@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-24T14:21:01",
-  "description": "## 1.0.0 (2026-11-24)\n\n### ✨ New Features\n\n* Sportsnet Unlimited patches ([0d99742](https://github.com/sftsang/sportsnet-patches/commit/0d9974295de50994741108b69fcab55b7c02099b))\n\n### 🐛 Bug Fixes\n\n* Add the generated patch list markers to the README ([6261a32](https://github.com/sftsang/sportsnet-patches/commit/6261a32bf91f5e0898d59396ac384e5906e16824))\n* Neutral defaults, README and release metadata ([ba6d1a2](https://github.com/sftsang/sportsnet-patches/commit/ba6d1a22c8f3850046effb1ecc24b0b83b65b3bf))",
-  "download_url": "https://github.com/sftsang/sportsnet-patches/releases/download/v1.0.0/patches-1.0.0.mpp",
+  "created_at": "2026-11-24T15:19:34",
+  "description": "## [1.1.0-dev.1](https://github.com/sftsang/sportsnet-patches/compare/v1.0.0...v1.1.0-dev.1) (2026-11-24)\n\n### ✨ New Features\n\n* Show switches for each bottom tab ([1fabc6c](https://github.com/sftsang/sportsnet-patches/commit/1fabc6cf48c5f4f8d4698ceb2807d18eee8c9cbe))",
+  "download_url": "https://github.com/sftsang/sportsnet-patches/releases/download/v1.1.0-dev.1/patches-1.1.0-dev.1.mpp",
   "signature_download_url": "",
-  "version": "1.0.0"
+  "version": "1.1.0-dev.1"
 }

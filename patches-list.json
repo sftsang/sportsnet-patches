@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.0",
+  "version": "1.1.0-dev.1",
   "patches": [
     {
       "name": "Custom bottom tabs",
@@ -29,21 +29,80 @@
       ],
       "options": [
         {
-          "key": "tabs",
-          "title": "Tabs",
-          "description": "Tabs in order, separated by commas: home, scores, watch, leagues, more, highlights. Tabs left out are hidden. Highlights only exists in some versions of the app.",
+          "key": "showHome",
+          "title": "Show Home",
+          "description": "Show the Home tab in the bottom bar.",
           "required": true,
-          "type": "kotlin.String",
-          "default": "home,scores,leagues,watch,more,highlights",
-          "values": {
-            "Sportsnet's order": "home,scores,leagues,watch,more,highlights",
-            "Watch first": "watch,scores,home,leagues,more,highlights"
-          }
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "showScores",
+          "title": "Show Scores",
+          "description": "Show the Scores tab in the bottom bar.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "showLeagues",
+          "title": "Show Leagues",
+          "description": "Show the Leagues tab in the bottom bar.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "showWatch",
+          "title": "Show Watch",
+          "description": "Show the Watch tab in the bottom bar.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "showMore",
+          "title": "Show More",
+          "description": "Show the More tab in the bottom bar.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "showHighlights",
+          "title": "Show Highlights",
+          "description": "Show the Highlights tab, in versions of the app that have one.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
         },
         {
           "key": "startTab",
           "title": "Start tab",
-          "description": "The tab the app opens on, such as watch. Leave empty to open on the first tab.",
+          "description": "The tab the app opens on. A hidden tab can still be the start tab.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "first",
+          "values": {
+            "First shown tab": "first",
+            "Home": "home",
+            "Scores": "scores",
+            "Leagues": "leagues",
+            "Watch": "watch",
+            "More": "more",
+            "Highlights": "highlights"
+          }
+        },
+        {
+          "key": "tabOrder",
+          "title": "Tab order",
+          "description": "Optional. Tab names in the order you want, separated by commas, such as watch, scores. Shown tabs left out go after them. Leave empty for Sportsnet's order.",
           "required": false,
           "type": "kotlin.String",
           "default": "",

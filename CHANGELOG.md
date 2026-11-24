@@ -1,3 +1,9 @@
+## [1.1.0-dev.1](https://github.com/sftsang/sportsnet-patches/compare/v1.0.0...v1.1.0-dev.1) (2026-11-24)
+
+### ✨ New Features
+
+* Show switches for each bottom tab ([1fabc6c](https://github.com/sftsang/sportsnet-patches/commit/1fabc6cf48c5f4f8d4698ceb2807d18eee8c9cbe))
+
 ## 1.0.0 (2026-11-24)
 
 ### ✨ New Features
