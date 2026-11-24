@@ -227,16 +227,18 @@ val watchSubTabPatch = bytecodePatch(
 
     val subTab by stringOption(
         key = "firstWatchSubTab",
-        default = "NHL=/nhl",
-        values = mapOf("NHL" to "NHL=/nhl"),
+        default = "",
+        values = mapOf("None" to "", "NHL" to "NHL=/nhl"),
         title = "First Watch sub-tab",
-        description = "The sub-tab's label and page path, as Label=/path. " +
-            "Nothing changes if the app does not have that page.",
-        required = true,
-    ) { value -> value != null && Regex("""^[^=]+=/\S*$""").matches(value.trim()) }
+        description = "The sub-tab's label and page path, as Label=/path, such as NHL=/nhl. " +
+            "Leave empty to keep the Watch tab as it is. Nothing changes if the app does not have that page.",
+        required = false,
+    ) { value -> value.isNullOrBlank() || Regex("""^[^=]+=/\S*$""").matches(value.trim()) }
 
     execute {
-        setExtensionValue(WATCH_SUB_TABS_CLASS, "firstSubTab", subTab!!.trim())
+        val chosen = subTab.orEmpty().trim()
+        if (chosen.isEmpty()) return@execute
+        setExtensionValue(WATCH_SUB_TABS_CLASS, "firstSubTab", chosen)
         WatchSubTabsFactoryFingerprint.method.addInstructions(
             0,
             "invoke-static {p1}, $WATCH_SUB_TABS_CLASS->navigation(Ljava/lang/Object;)V",

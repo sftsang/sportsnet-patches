@@ -1,104 +1,86 @@
-# 👋🧩 Morphe Patches template
+# Sportsnet Unlimited Patches
 
-Template repository for Morphe Patches.
+Personal patches for the Sportsnet Android app, for use with [Morphe](https://morphe.software/).
 
-## ❓ About
+> [!CAUTION]
+> **Use at your own risk.** These patches come with no warranty of any kind. They change how
+> the Sportsnet app works, may stop working or misbehave whenever Sportsnet updates its app or
+> services, and could break features you rely on. You are responsible for anything that happens
+> to your device, your app or your account.
 
-Patches for apps I like.
+> [!IMPORTANT]
+> **This project was generated entirely by AI.** Every patch, every line of code and this README
+> were written by an AI model (Claude, by Anthropic), directed and tested by the repository owner
+> on a single phone. No part of it has been reviewed by a professional Android developer. Read the
+> code before you trust it.
 
-<!-- TODO: Update this about section with a brief introduction/summary about this repo and what it offers. -->
+> [!NOTE]
+> **Not affiliated with or endorsed by Rogers, Sportsnet or the Morphe project.** "Sportsnet" and
+> "Sportsnet+" are trademarks of their owners and are named here only to say which app these
+> patches are for.
+>
+> This is a personal project. It has not been submitted to Morphe's Community Patches list.
 
-### How to use these patches
+## What these patches do not do
 
-Click the button below, or manually add this repo url to Morphe Manager: https://github.com/xyz-user/xyz-patches
+They do not unlock content you do not pay for. They do not get around signing in, subscription
+tiers, regional blackouts or DRM. Locked games stay locked; the "Watch from Scores" patch only shows
+you that they are locked. Ads that are part of the Sportsnet+ video stream itself are not removed.
 
-<a href="https://morphe.software/add-source?github=xyz-user/xyz-patches">
-  <img src=".github/assets/add-to-morphe.svg" alt="Add to Morphe" height="48">
-</a>
+## Supported version
 
-## 🩹 Patches list
+| App | Package | Tested version |
+|---|---|---|
+| Sportsnet | `com.rogers.sportsnet.sportsnet` | 6.58.0.2096-mobile-production |
 
-<!-- PATCHES_START EXPANDED -->
+Other versions may work but are untested.
 
-<!-- Do not modify this section by hand. The patch list is generated when release.yml creates a new release.
-     
-     If you wish for the patches list to be collapsed, then remove the word 'EXPANDED' from the comment tag above.
+## Patches
 
-     If you wish to manually keep this list updated then remove the PATCHES_START and PATCHES_END 
-     comment blocks entirely. -->
+| Patch | What it does | Options |
+|---|---|---|
+| Hide ads | Removes banner, in-feed and launch ads, and the ads in highlight clips. | |
+| Disable tracking | Stops Adobe, Comscore, New Relic, Chartbeat, Firebase Analytics and Crashlytics, Conviva and Youbora. | |
+| Disable game alerts | Turns off game alerts, live score notifications and Airship's pop-up messages and tracking, and removes the notification permission so the app never asks for it. | |
+| Hide Listen button | Removes the Listen (radio and podcasts) button from Home, Scores and Leagues. | |
+| Custom bottom tabs | Chooses which bottom tabs show, their order, and the tab the app opens on. Hidden tabs still open from links. | **Tabs**: comma separated, from `home`, `scores`, `watch`, `leagues`, `more`, `highlights`. **Start tab**: one of those; empty opens on the first tab. |
+| Hide leagues | Keeps the Scores and Watch tabs to the leagues you follow. Your favourite teams' group on Scores always stays. | **Leagues to show**, such as `NHL, ATP, WTA`; empty shows all. **Leagues to hide**, such as `MLS, WNBA`. |
+| Watch tab opens on a league | Adds a league page as the first Watch sub-tab, so the Watch tab opens on it. | **First Watch sub-tab** as `Label=/path`, such as `NHL=/nhl`; empty changes nothing. |
+| Custom skip intervals | Separate fast forward and rewind times for the Sportsnet+ player. Quick repeated presses add up. | **Fast forward** (default 30 s), **Rewind** (default 10 s). |
+| Video quality | Sets the quality the Sportsnet+ player starts at and stays within, and shows the player's hidden HDR setting. | **Quality**: Automatic, Start at the best quality (default), Always HD, Data saver. |
+| Save watch position often | Saves how far you got in a replay every few seconds and after you skip, not only when you pause or close it. | **Save every** (default 30 s). |
+| Watch from Scores | Shows a watch button on every Scores game: Watch Live during a game, Watch Full Game after it. Games you cannot watch show a lock and the reason (upgrade required, blacked out, sign in, not on Sportsnet+). | **Start playing** (default on). |
+| Stay on Scores when watching | Opens games tapped on Scores on top of Scores, so going back from the video returns to Scores instead of the Watch tab. | |
 
-#### A list of your patches will automatically be shown here after your first patches release is created.
+The patched app is re-signed, and Sportsnet derives the key for its built-in service keys from its
+signing certificate. An internal patch, applied with every other patch, gives the app its original
+(public) certificate so it can still start.
 
-&nbsp;
+## Using the patches
 
-## 🚀 Getting development started
+In Morphe Manager, add this repository as a patch source:
 
-To start using this template, follow these steps:
+```
+https://github.com/sftsang/sportsnet-patches
+```
 
-1. [Setup](https://github.com/MorpheApp/morphe-documentation/blob/main/docs/morphe-development/README.md) your development environment including adding a GitHub PAT as described [here](https://github.com/MorpheApp/morphe-patcher/blob/main/docs/2_1_setup.md#-prepare-the-environment).
-2. [Create a new repository using this template](https://github.com/new?template_name=morphe-patches-template&template_owner=MorpheApp). Select create a new repository, and **enable 'Include all branches'** 
-3. Enable "Allow GitHub Actions to create and approve pull requests" in your repo Settings > Actions > General > Workflow permissions
-4. Update the [build.gradle.kts](patches/build.gradle.kts) file (Specifically, the 
-   [group of the project](patches/build.gradle.kts#L1), and the [About](patches/build.gradle.kts#L6-L11))
-5. Update the [README.md](README.md) file to be specific of your repo, and update the links in the [issue templates](.github/ISSUE_TEMPLATE).
-6. Choose a name for your patches project. Keep in mind you must use a name that does not 
-   imply authorship by the Morphe open source project. If unsure, then simply name these
-   patches after yourself ("UserXYZ Morphe patches"). See the [NOTICE](NOTICE) for details. 
-7. (Optional): Add `patches-bundle.png` to the project if you want a custom icon to show in
-   Morphe Manager instead of your GitHub profile avatar.
-8. (Optional): Set `INCLUDE_APP_ICONS = True` in [generate_patches_readme.py](.github/scripts/generate_patches_readme.py) to show app icons in the generated patches list.
-9. (Optional): Sign your releases, so Morphe Manager refuses a release that was changed or swapped after you published it:
-   1. Run `./gradlew generateSigningKey`. It creates `morphe-signing.pub` and `morphe-signing.key`.
-   2. Commit `morphe-signing.pub`. Never commit `morphe-signing.key`, it is already ignored by git.
-   3. Add the content of `morphe-signing.key` as the `MORPHE_SIGNING_KEY` secret in your repo
-      Settings > Secrets and variables > Actions, then keep a backup of it somewhere safe and delete the file.
+Then patch Sportsnet and set the options you want. If Sportsnet from the Play Store is installed,
+it has to be uninstalled first, since the patched app is signed differently; you will need to sign
+in again.
 
-   Every release is signed from then on. If you lose the key or it leaks, create a new one the same way;
-   users then have to confirm the new key in Morphe Manager before they get your next release.
+## Building
 
-🎉 You are now ready to start creating patches!
+You need JDK 21 and a GitHub token with the `read:packages` scope, since the Morphe build tools
+are published on GitHub Packages.
 
-## 🧑‍💻 Dev usage
+```bash
+GITHUB_ACTOR=<your user> GITHUB_TOKEN=<token> ./gradlew buildAndroid
+```
 
-To develop and release your Patches using this template:
+The patches file is written to `patches/build/libs/patches-*.mpp`. Releases are built by the
+release workflow on pushes to `dev` (pre-releases) and `main`.
 
-- **Make all changes to the `dev` branch.**
-- For local development work build your patches using the gradle task `./gradlew buildAndroid` to generate the mpp file found in `patches/build/libs/patches-*.mpp`. Apply your patches locally using Morphe Desktop tool like any other patch bundle.
-- Always use [Semantic commit](https://kapeli.com/cheat_sheets/Semantic_Commits.docset/Contents/Resources/Documents/index) messages for commits. To keep it simple use only 3 commit message types: 
-  - `feat: Added a new feature`
-  - `fix: Some problem now fixed`
-  - `chore: Random change you do not want in the user facing changelog`
-- Commits of `fix:` and `feat:` will automatically generate new pre-releases and `chore:` will not create a new release.
-- Users can apply your dev branch releases by enabling `pre-release` in Morphe Manager patch sources.
-- When your dev branch is ready, and you want a stable release, merge dev branch to main (do not squash, and only merge).
-- **Always use semantic release (release.yml)**. Do not manually upload or create releases by hand
-  because many files must be updated and release.yml handles everything.
+## License
 
-## 🤓 Tips
-- See the [patcher documentation](https://github.com/MorpheApp/morphe-patcher/blob/main/docs/1_patcher_intro.md) for more examples of creating patches and fingerprints.
-- Do not use AI to create new release scripts. The `release.yml` here already handles everything.
-  If you need something custom with your releases then modify the existing `release.yml`
-  and `.releaserc` instead of writing everything new from scratch.
-- Do not manually edit or manually commit any generated files such as: `patches-list.json`,
-  `patches-bundle.json`, `CHANGELOG.md`.  These files will be automatically updated by `release.yml`.
-- Do not force push any semantic release commits as that will break all future releases.
-  If you need to fix a broken release, it's always easiest to create a new release instead of 
-  fixing an existing release.
-
-
-<!-- The patches end tag is intentionally placed here so the first release will clean up 
-     this readme of all developer instructions above. -->
-<!-- PATCHES_END -->
-
-### 🛠️ Building locally
-
-- Run `./gradlew buildAndroid`
-- The built patches .mpp file is found in `patches/build/libs/patches-*.mpp`
-- Patch the mpp file using [Morphe-Desktop](https://github.com/MorpheApp/morphe-desktop)
-  like any other patch bundle.
-
-See the [Morphe documentation](https://github.com/MorpheApp/morphe-documentation) for more information.
-
-## 📜 License
-
-UserXYZ Patches are licensed under the [GNU General Public License v3.0](LICENSE)
+GPLv3, as inherited from the [Morphe patches template](https://github.com/MorpheApp/morphe-patches-template).
+See [LICENSE](LICENSE) and [NOTICE](NOTICE).

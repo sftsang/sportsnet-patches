@@ -15,11 +15,11 @@ group = "app.unlimited.sportsnet"
 patches {
     about {
         name = "Sportsnet Unlimited Patches"
-        description = "Personal patches for the Sportsnet app"
-        source = "git@github.com:sftsang/sportsnet-patches.git"
+        description = "Personal, AI-generated patches for the Sportsnet app. Use at your own risk."
+        source = "https://github.com/sftsang/sportsnet-patches"
         author = "sftsang"
-        contact = "na"
-        website = "na"
+        contact = "https://github.com/sftsang/sportsnet-patches/issues"
+        website = "https://github.com/sftsang/sportsnet-patches"
         license = "GPLv3"
     }
 }
