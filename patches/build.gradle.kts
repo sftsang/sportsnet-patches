@@ -10,15 +10,14 @@ plugins {
     alias(libs.plugins.animalsniffer)
 }
 
-group = "app.template"
+group = "app.unlimited.sportsnet"
 
 patches {
-    // TODO: Update this section with your project details.
     about {
-        name = "UserXYZ Patches"
-        description = "Patches for apps I like"
-        source = "git@github.com:UserXYZ/morphe-patches.git"
-        author = "Awesome dev"
+        name = "Sportsnet Unlimited Patches"
+        description = "Personal patches for the Sportsnet app"
+        source = "git@github.com:sftsang/sportsnet-patches.git"
+        author = "sftsang"
         contact = "na"
         website = "na"
         license = "GPLv3"
