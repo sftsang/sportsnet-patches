@@ -4,6 +4,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.booleanOption
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.classDefForEach
 import app.morphe.patcher.patch.mutableClassDefBy
@@ -107,6 +108,16 @@ val hideListenButtonPatch = bytecodePatch(
 }
 
 private const val TABS_CLASS = "$EXTENSION_PACKAGE/BottomTabs;"
+private const val FIRST_TAB = "first"
+private val TAB_NAMES = listOf("home", "scores", "leagues", "watch", "more", "highlights")
+private val TAB_TITLES = mapOf(
+    "home" to "Home",
+    "scores" to "Scores",
+    "leagues" to "Leagues",
+    "watch" to "Watch",
+    "more" to "More",
+    "highlights" to "Highlights",
+)
 
 @Suppress("unused")
 val bottomTabsPatch = bytecodePatch(
@@ -118,37 +129,54 @@ val bottomTabsPatch = bytecodePatch(
     dependsOn(originalSignaturePatch)
     extendWith("extensions/extension.mpe")
 
-    val tabs by stringOption(
-        key = "tabs",
-        default = "home,scores,leagues,watch,more,highlights",
-        values = mapOf(
-            "Sportsnet's order" to "home,scores,leagues,watch,more,highlights",
-            "Watch first" to "watch,scores,home,leagues,more,highlights",
-        ),
-        title = "Tabs",
-        description = "Tabs in order, separated by commas: home, scores, watch, leagues, more, " +
-            "highlights. Tabs left out are hidden. Highlights only exists in some versions of the app.",
-        required = true,
-    ) { value ->
-        val names = value?.split(",")?.map { it.trim().lowercase() }?.filter { it.isNotEmpty() }
-        !names.isNullOrEmpty() &&
-            names.all { it in setOf("home", "scores", "watch", "leagues", "more", "highlights") }
+    // One switch per tab, in Sportsnet's own order
+    val shown = TAB_NAMES.associateWith { name ->
+        booleanOption(
+            key = "show${name.replaceFirstChar(Char::uppercase)}",
+            default = true,
+            title = "Show ${TAB_TITLES.getValue(name)}",
+            description = if (name == "highlights") {
+                "Show the Highlights tab, in versions of the app that have one."
+            } else {
+                "Show the ${TAB_TITLES.getValue(name)} tab in the bottom bar."
+            },
+            required = true,
+        )
     }
 
     val startTab by stringOption(
         key = "startTab",
-        default = "",
+        default = FIRST_TAB,
+        values = mapOf("First shown tab" to FIRST_TAB) +
+            TAB_NAMES.associateBy { TAB_TITLES.getValue(it) },
         title = "Start tab",
-        description = "The tab the app opens on, such as watch. Leave empty to open on the first tab.",
+        description = "The tab the app opens on. A hidden tab can still be the start tab.",
+        required = true,
+    ) { value -> value == null || value.trim().lowercase() in TAB_NAMES + FIRST_TAB }
+
+    val tabOrder by stringOption(
+        key = "tabOrder",
+        default = "",
+        title = "Tab order",
+        description = "Optional. Tab names in the order you want, separated by commas, such as " +
+            "watch, scores. Shown tabs left out go after them. Leave empty for Sportsnet's order.",
         required = false,
     ) { value ->
         value.isNullOrBlank() ||
-            value.trim().lowercase() in setOf("home", "scores", "watch", "leagues", "more", "highlights")
+            value.split(",").map { it.trim().lowercase() }.filter { it.isNotEmpty() }.all { it in TAB_NAMES }
     }
 
     execute {
-        setExtensionValue(TABS_CLASS, "tabs", tabs!!)
-        setExtensionValue(TABS_CLASS, "startTabName", startTab.orEmpty().trim())
+        val visible = TAB_NAMES.filter { shown.getValue(it).value != false }
+        if (visible.isEmpty()) throw PatchException("Custom bottom tabs: switch on at least one tab")
+        val ordered = tabOrder.orEmpty().split(",").map { it.trim().lowercase() }
+            .filter { it in visible }.distinct()
+        val tabs = (ordered + visible.filterNot { it in ordered }).joinToString(",")
+        val start = startTab.orEmpty().trim().lowercase().takeIf { it in TAB_NAMES }.orEmpty()
+        Logger.getLogger(this::class.java.name).info("Bottom tabs: $tabs, start tab: ${start.ifEmpty { "first" }}")
+
+        setExtensionValue(TABS_CLASS, "tabs", tabs)
+        setExtensionValue(TABS_CLASS, "startTabName", start)
 
         SportsnetBottomBarFingerprint.method.addInstructions(
             0,
