@@ -1,3 +1,9 @@
+## [1.1.1](https://github.com/sftsang/sportsnet-patches/compare/v1.1.0...v1.1.1) (2026-11-24)
+
+### 🐛 Bug Fixes
+
+* Update Scores locks after signing in ([e4eaae8](https://github.com/sftsang/sportsnet-patches/commit/e4eaae87b90d198fd5b4ee05d70583905fe3b306))
+
 ## [1.1.1-dev.1](https://github.com/sftsang/sportsnet-patches/compare/v1.1.0...v1.1.1-dev.1) (2026-11-24)
 
 ### 🐛 Bug Fixes
