@@ -60,16 +60,28 @@ public final class ScoresWatchButton {
         requestWaiting();
     }
 
-    /** Called whenever the app checks entitlement, with the app's current subscription state. */
+    /**
+     * Called whenever the app checks entitlement, with the app's current subscription state. The
+     * state compares by value (signed out, or signed in with a set of entitlements), so signing in,
+     * signing out or changing plans shows up as a change, and every game is checked again.
+     */
     public static void entitlementCheck(Object factory, Object item, Object userState, boolean flag, String league) {
-        boolean first = entitlementFactory == null || userEntitlementState == null;
+        Object previous = userEntitlementState;
+        boolean first = entitlementFactory == null || previous == null;
         entitlementFactory = factory;
         if (userState != null) userEntitlementState = userState;
         tveToDtcPhaseTwo = flag;
-        if (first) requestWaiting();
+        if (first) {
+            requestWaiting();
+        } else if (userState != null && !userState.equals(previous)) {
+            Logger.info("Subscription changed: " + previous.getClass().getSimpleName() + " → "
+                    + userState.getClass().getSimpleName() + ", checking " + phases.size() + " games again");
+            requested.clear();
+            requestWaiting();
+        }
     }
 
-    /** Checks the games shown before the app's services were ready. */
+    /** Checks the games seen so far that have not been checked with the current subscription. */
     private static void requestWaiting() {
         String[] eventIds;
         synchronized (phases) {
